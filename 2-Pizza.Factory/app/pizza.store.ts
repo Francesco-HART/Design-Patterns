@@ -1,11 +1,8 @@
-import { SimplePizzaFactory } from "./pizza-factory/simple-pizza.factory";
-import { MargheritaPizza } from "./pizze/margherita.pizza";
-import { PepperoniPizza } from "./pizze/pepperoni.pizza";
+import { PizzaFactory } from "./pizza-factory/factory";
 import { Pizza } from "./pizze/pizza";
-import { VeggiePizza } from "./pizze/veggie.pizza";
 
 export class PizzaStore {
-  private factory: SimplePizzaFactory = new SimplePizzaFactory();
+  constructor(private factory: PizzaFactory) {}
   orderPizza(type: string): string {
     let pizza: Pizza;
 

@@ -2,8 +2,9 @@ import { MargheritaPizza } from "@/pizze/margherita.pizza";
 import { PepperoniPizza } from "@/pizze/pepperoni.pizza";
 import { Pizza } from "@/pizze/pizza";
 import { VeggiePizza } from "@/pizze/veggie.pizza";
+import { PizzaFactory } from "./factory";
 
-export class SimplePizzaFactory {
+export class SimplePizzaFactory implements PizzaFactory {
   constructor() {}
 
   creatingPizza(type: string) {
