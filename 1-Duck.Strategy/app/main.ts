@@ -1,4 +1,4 @@
-import { Mallard } from "./Mallard.duck";
+import { Mallard } from "./mallard.duck";
 
 function main() {
   console.log("Duck Example");
