@@ -1,17 +1,14 @@
+import { PizzaStore } from "./pizza.store";
+
 function main() {
-  console.log("Pizza Factory Example");
+  const pizzaFactory = new PizzaStore();
+  const pizza = pizzaFactory.orderPizza("margherita");
+  console.log(pizza);
 
-  // Here you would typically create pizzas using a factory
-  console.log("Creating a Pepperoni Pizza...");
-  // Simulate pizza creation process
-  console.log("Pepperoni Pizza is ready!");
+  const pizza2 = pizzaFactory.orderPizza("pepperoni");
+  console.log(pizza2);
 
-  console.log("Creating a Veggie Pizza...");
-  // Simulate pizza creation process
-  console.log("Veggie Pizza is ready!");
-
-  console.log("Creating a Margherita Pizza...");
-  // Simulate pizza creation process
-  console.log("Margherita Pizza is ready!");
+  const pizza3 = pizzaFactory.orderPizza("veggie");
+  console.log(pizza3);
 }
 main();
