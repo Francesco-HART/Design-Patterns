@@ -43,3 +43,17 @@ ingredients to California, and what’s next?
 Austin?
 For this to work, you’re going to have to figure
 out how to handle families of ingredients.
+
+CheesePizza :
+
+dépend de classes concrètes
+
+est liée à NY
+
+Impossible de faire :
+
+ChicagoStyleCheesePizza sans dupliquer
+
+Violation de Open / Closed
+
+PizzaStore ne contrôle pas vraiment le style

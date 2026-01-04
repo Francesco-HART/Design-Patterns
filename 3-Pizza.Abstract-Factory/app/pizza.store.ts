@@ -1,4 +1,5 @@
-import { Pizza } from "./pizze/pizza";
+import { NYPizzaIngredientFactory } from "./ingredients/pizza-ingredient.factory";
+import { CheesePizza, Pizza } from "./pizze/pizza";
 
 export abstract class PizzaStore {
   orderPizza(type: string): Pizza {
@@ -13,4 +14,16 @@ export abstract class PizzaStore {
   }
 
   protected abstract createPizza(type: string): Pizza;
+}
+
+export class NYPizzaStore extends PizzaStore {
+  protected createPizza(type: string): Pizza {
+    const ingredientFactory = new NYPizzaIngredientFactory();
+
+    if (type === "cheese") {
+      return new CheesePizza(ingredientFactory);
+    }
+
+    throw new Error("Unknown pizza type");
+  }
 }

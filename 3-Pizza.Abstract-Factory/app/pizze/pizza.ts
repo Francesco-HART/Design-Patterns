@@ -1,8 +1,4 @@
-import {
-  ThinCrustDough,
-  MarinaraSauce,
-  ReggianoCheese,
-} from "@/ingredients/ingredients";
+import { PizzaIngredientFactory } from "@/ingredients/pizza-ingredient.factory";
 
 export abstract class Pizza {
   protected name!: string;
@@ -23,11 +19,16 @@ export abstract class Pizza {
 }
 
 export class CheesePizza extends Pizza {
+  constructor(private ingredientFactory: PizzaIngredientFactory) {
+    super();
+    this.name = "Cheese Pizza";
+  }
+
   prepare(): void {
     console.log(`Preparing ${this.name}`);
 
-    const dough = new ThinCrustDough();
-    const sauce = new MarinaraSauce();
-    const cheese = new ReggianoCheese();
+    const dough = this.ingredientFactory.createDough();
+    const sauce = this.ingredientFactory.createSauce();
+    const cheese = this.ingredientFactory.createCheese();
   }
 }
