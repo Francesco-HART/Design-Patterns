@@ -11,7 +11,7 @@ interface IPicture {
 interface IVideo {
   getDuration(): number;
   takeScreenshot(): IPicture;
-  getChunks(): Promise<string[]>;
+  getChunks(): Promise<string[][]>;
 }
 
 class Picture implements IPicture {
@@ -37,7 +37,7 @@ class Video implements IVideo {
     return new Picture();
   }
 
-  getChunks(): Promise<string[]> {
+  getChunks(): Promise<string[][]> {
     return Promise.resolve([]);
   }
 }
