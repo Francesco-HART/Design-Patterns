@@ -48,7 +48,7 @@ export interface StorageParams {
   webdav_authorization_key?: string;
 }
 
-export class Storage {
+export class StorageService {
   async upload(attachment: Attachment, params: StorageParams): Promise<string> {
     const attachmentId = crypto.randomUUID();
 

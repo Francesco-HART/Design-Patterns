@@ -1,12 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
-import {
-	Attachment,
-	Destination,
-	Storage,
-	StorageParams,
-} from "./storage.service.ts";
+
 import multer from "multer";
 import * as path from "path";
+import {
+  Attachment,
+  Destination,
+  StorageParams,
+  StorageService,
+} from "./storage.service.ts.js";
 
 const app = express();
 const PORT = 3000;
@@ -159,7 +160,7 @@ class UploadRequest {
       };
     }
 
-    const storage = new Storage();
+    const storage = new StorageService();
     return storage.upload(attachment, params);
   }
 }
