@@ -180,3 +180,6 @@ Steps:
 2. Implémente plusieurs classes concrètes qui implémentent IStorageService (S3StorageService, SFTPStorageService, WebDavStorageService).
 3. Modifier uploader et ne passer que le Storage, ce n'est plus à lui de décider comment stocker le fichier.
 4. Retirer la creation du storage dans le post et le faire via une factory
+5. Créer une interface IScanner avec une méthode scan(filePath: string): Promise<boolean>.
+6. Implémente deux classes concrètes qui implémentent IScanner (ThreatProtectScanner, SynergySecurityScanner).
+7. Modifier UploadRequest pour accepter un scanner en paramètre.
