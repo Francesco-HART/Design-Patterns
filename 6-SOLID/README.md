@@ -42,3 +42,17 @@ inconveniences:- Design constraints: Adhering to LSP may impose constraints on t
 
 - Increased complexity: Ensuring that derived classes conform to the base class contracts may introduce additional complexity.
 - Potential for over-engineering: Overemphasis on LSP can lead to overly complex class hierarchies and abstractions.
+
+4- Interface segregation principle (ISP)
+Definition: Clients should not be forced to depend on interfaces they do not use. Instead of one general-purpose interface, create multiple specific interfaces.
+Implementation: Design your interfaces to be small and focused, ensuring that clients only need to implement the methods they actually use.
+
+Advantages:- Reduced coupling: Clients are only dependent on the methods they use, leading to lower coupling between components.
+
+- Improved maintainability: Smaller, focused interfaces are easier to understand and maintain.
+- Enhanced flexibility: Clients can implement only the interfaces they need, allowing for more tailored solutions.
+
+inconveniences:- Increased number of interfaces: Adhering to ISP may lead to a larger number of interfaces, which can complicate the codebase.
+
+- Potential for fragmentation: Too many small interfaces can lead to fragmentation, making it harder to manage and understand the overall design.
+- Coordination overhead: More interfaces may require additional coordination and communication between components.
