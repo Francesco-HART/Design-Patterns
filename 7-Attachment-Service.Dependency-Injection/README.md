@@ -93,3 +93,5 @@ Steps:
 1. Identifie les responsabilités dans le code actuel.
    Donc faire un interface IStorageService avec les méthodes nécessaires (upload, download, delete).
 2. Implémente plusieurs classes concrètes qui implémentent IStorageService (S3StorageService, SFTPStorageService, WebDavStorageService).
+3. Modifier uploader et ne passer que le Storage, ce n'est plus à lui de décider comment stocker le fichier.
+4. Retirer la creation du storage dans le post et le faire via une factory

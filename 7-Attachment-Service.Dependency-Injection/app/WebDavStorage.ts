@@ -7,9 +7,11 @@ import { createClient, WebDAVClient } from "webdav";
  * Implémentation du stockage WebDAV
  */
 export class WebDavStorage implements IStorage {
+  private readonly url: string;
   private readonly client: WebDAVClient;
 
   constructor(url: string, authorizationKey: string) {
+    this.url = url;
     this.client = createClient(url, {
       headers: {
         Authorization: `Bearer ${authorizationKey}`,

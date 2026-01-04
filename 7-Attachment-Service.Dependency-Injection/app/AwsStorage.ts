@@ -10,11 +10,17 @@ import { IStorage } from "./IStorage.interface";
 export class AwsStorage implements IStorage {
   private readonly accessKeyId: string;
   private readonly secretAccessKey: string;
+  private readonly bucketName: string;
   private readonly s3: AWS.S3;
 
-  constructor(accessKeyId: string, secretAccessKey: string) {
+  constructor(
+    accessKeyId: string,
+    secretAccessKey: string,
+    bucketName: string = "your-bucket-name"
+  ) {
     this.accessKeyId = accessKeyId;
     this.secretAccessKey = secretAccessKey;
+    this.bucketName = bucketName;
 
     // Configuration AWS
     this.s3 = new AWS.S3({
@@ -25,9 +31,8 @@ export class AwsStorage implements IStorage {
 
   async upload(attachment: Attachment): Promise<string> {
     const attachmentId = crypto.randomUUID();
-    const s3 = new AWS.S3();
 
-    const mainUpload = s3.upload({
+    const mainUpload = this.s3.upload({
       Bucket: this.bucketName,
       Key: `${attachmentId}`,
       Metadata: { messageId: attachment.message_id },
@@ -37,7 +42,7 @@ export class AwsStorage implements IStorage {
     const uploads = [mainUpload.promise()];
 
     if (attachment.preview_local_path) {
-      const previewUpload = s3.upload({
+      const previewUpload = this.s3.upload({
         Bucket: this.bucketName,
         Key: `${attachmentId}-preview`,
         Metadata: { messageId: attachment.message_id },
