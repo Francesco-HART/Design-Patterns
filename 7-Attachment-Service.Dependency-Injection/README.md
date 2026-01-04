@@ -87,3 +87,9 @@ Critères de réussite
 ✅ Tu peux tester ChatService sans réseau / sans filesystem
 ✅ Ton code respecte DIP : les “hauts niveaux” dépendent d’abstractions
 ✅ Ajouter un nouveau storage = ajouter une classe, pas modifier le métier (OCP-friendly)
+
+Steps:
+
+1. Identifie les responsabilités dans le code actuel.
+   Donc faire un interface IStorageService avec les méthodes nécessaires (upload, download, delete).
+2. Implémente plusieurs classes concrètes qui implémentent IStorageService (S3StorageService, SFTPStorageService, WebDavStorageService).
