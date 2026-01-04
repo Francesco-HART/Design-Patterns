@@ -58,3 +58,6 @@ class Uploader {
     // process chunks
   }
 }
+
+// On voit bine un point commun :
+// both IPicture and IVideo have a method that returns byte data asynchronously
