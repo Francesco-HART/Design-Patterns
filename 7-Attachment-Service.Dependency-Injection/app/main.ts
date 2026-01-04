@@ -4,18 +4,13 @@ import multer from "multer";
 import * as path from "path";
 import { IStorage } from "./IStorage.interface";
 import { StorageFactory } from "./storage.factory";
-import { Scanner, SynergySecurityScanner } from "./scanner.middleware.js";
+import {
+  Scanner,
+  SynergySecurityScanner,
+  ThreatProtectScannerMiddleware,
+} from "./scanner.middleware.js";
+import { SharpImageScaler } from "./sharp-image-scaler.js";
 
-// -----------------------------------------------------------------------------
-// ThreatProtectScanner (dummy pour le kata)
-// -----------------------------------------------------------------------------
-class ThreatProtectScanner {
-  async scan(_filePath: string): Promise<boolean> {
-    // Simulation d'un scan antivirus
-    // Retourne false = pas de virus détecté
-    return false;
-  }
-}
 interface SFTPConfig {
   sftp_host: string;
   sftp_port: number;
@@ -37,9 +32,10 @@ export type StorageConfiguration = StorageParams & {
   webdav_companies?: { [companyId: string]: WebDavConfig };
 };
 
+const imageScaler = new SharpImageScaler();
 const isProduction = process.env.NODE_ENV === "production";
 const virusScanner = isProduction
-  ? new ThreatProtectScanner()
+  ? new ThreatProtectScannerMiddleware()
   : new SynergySecurityScanner();
 const app = express();
 const PORT = 3000;
@@ -105,7 +101,7 @@ app.post(
       const storage = StorageFactory.createStorage(storageConfig);
 
       // Uploader avec injection de dépendance
-      const request = new UploadRequest(storage, virusScanner);
+      const request = new UploadRequest(storage, virusScanner, imageScaler);
       const attachmentId = await request.upload(attachment, file.mimetype);
 
       res.status(200).json({ attachmentId });
@@ -118,15 +114,31 @@ app.post(
 class UploadRequest {
   private readonly storage: IStorage;
   private readonly scanner: Scanner;
+  private readonly imageScaler: SharpImageScaler;
 
-  constructor(storage: IStorage, scanner: Scanner) {
+  private readonly MAX_IMAGE_SIZE_PX = 500;
+
+  constructor(
+    storage: IStorage,
+    scanner: Scanner,
+    imageScaler: SharpImageScaler
+  ) {
     this.storage = storage;
     this.scanner = scanner;
+    this.imageScaler = imageScaler;
   }
 
   async upload(attachment: Attachment, _mimeType: string): Promise<string> {
     if (await this.scanner.scan(attachment.local_path)) {
       throw new Error("Virus detected in attachment");
+    }
+
+    if (this.imageScaler.supported(_mimeType)) {
+      console.log(`🖼️ Scaling image attachment for user ${attachment.userId}`);
+      attachment.preview_local_path = await this.imageScaler.scale(
+        attachment.local_path,
+        this.MAX_IMAGE_SIZE_PX
+      );
     }
 
     return this.storage.upload(attachment);
