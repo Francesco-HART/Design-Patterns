@@ -1,89 +1,172 @@
-🥋 Kata — Attachment Service & Dependency Injection (DIP)
-Contexte
+# 🥋 Kata — Attachment Service & Dependency Injection (DIP)
 
-On développe une application de chat interne pour une entreprise.
-Les utilisateurs peuvent discuter dans des threads ou en messages privés.
+## Contexte
 
-Fonctionnalité : envoyer des fichiers
+Nous développons une **application de chat interne** pour une entreprise.
 
-Les utilisateurs peuvent aussi envoyer des images / fichiers dans une conversation.
+Les utilisateurs peuvent :
 
-Architecture : Attachment Service
+- discuter dans des **threads**
+- échanger en **messages privés**
+- envoyer des **fichiers et images** dans les conversations
 
-Quand un utilisateur envoie un fichier, celui-ci est uploadé vers un service dédié : Attachment Service.
-Ce service est responsable de :
+---
 
-stocker les fichiers,
+## Fonctionnalité : Envoi de fichiers
 
-les récupérer,
+Les utilisateurs peuvent envoyer des **images ou fichiers** dans une conversation.
 
-les traiter (ex: thumbnails, scan, compression…).
+Lorsqu’un fichier est envoyé, il est traité par un service dédié appelé :
 
-Objectif du kata
+> **Attachment Service**
 
-On veut construire tout ce flux en respectant DIP et en utilisant Dependency Injection (injection manuelle).
+---
 
-Problématique
+## Architecture : Attachment Service
 
-Actuellement, l’équipe a codé vite, et le code est devenu :
+Le **Attachment Service** est responsable de :
 
-couplé à une implémentation concrète (ex: upload HTTP direct, stockage local, etc.)
+- stocker les fichiers
+- les récupérer
+- les traiter  
+  _(ex : génération de preview, scan antivirus, compression, etc.)_
 
-difficile à tester (pas possible de mocker facilement)
+Le module **Chat** délègue entièrement cette responsabilité.
 
-difficile à faire évoluer (ajouter un autre storage = modifier le code métier)
+---
 
-## Architecture actuelle
+## Objectif du kata
+
+Construire ce flux **en respectant le principe de Dependency Inversion (DIP)**  
+et en utilisant **l’injection de dépendances (manuelle)**.
+
+Ce kata est volontairement orienté :
+
+- architecture
+- testabilité
+- évolutivité
+
+---
+
+## Problématique initiale
+
+Le code a été écrit rapidement et présente plusieurs problèmes :
+
+- ❌ fort couplage à des implémentations concrètes  
+  _(ex : upload HTTP direct, stockage local, AWS en dur…)_
+
+- ❌ difficile à tester  
+  _(impossible de mocker facilement le stockage ou les scanners)_
+
+- ❌ difficile à faire évoluer  
+  _(ajouter un nouveau storage implique de modifier le code métier)_
+
+---
+
+## Nouveau besoin métier : Scan antivirus
 
 Lorsqu’un utilisateur envoie un fichier :
 
-le fichier est transmis à un Attachment Service
+> **le fichier doit obligatoirement être scanné avant d’être stocké**
 
-ce service est responsable de :
+### Scanner actuel
 
-l’upload
+Aujourd’hui, nous utilisons un scanner antivirus appelé :
 
-le stockage
+- **ThreatProtect**
 
-la récupération
+### Nouveau fournisseur
 
-le traitement (preview, scan, etc.)
+Un nouveau scanner est disponible :
 
-Par défaut, les fichiers sont stockés sur Amazon S3 (AWS).
+- **Synergy Security Scanner**
 
-⚠️ Nouvelle contrainte métier
+👉 Il est **meilleur techniquement** que ThreatProtect.
 
-Tous les clients n’acceptent pas AWS S3.
+### Contrainte contractuelle
+
+Malheureusement :
+
+- le contrat avec Synergy n’est **pas encore finalisé**
+- Synergy est **autorisé uniquement en environnement de développement**
+- **INTERDIT en production**
+
+| Environnement | Scanner autorisé |
+| ------------- | ---------------- |
+| Development   | Synergy Security |
+| Production    | ThreatProtect    |
+
+---
+
+## Architecture actuelle (simplifiée)
+
+Lorsqu’un utilisateur envoie un fichier :
+
+1. le fichier est transmis au **Attachment Service**
+2. ce service gère :
+   - l’upload
+   - le stockage
+   - la récupération
+   - les traitements (preview, scan, etc.)
+
+Par défaut, les fichiers sont stockés sur **Amazon S3 (AWS)**.
+
+---
+
+## ⚠️ Nouvelle contrainte métier : stockage
+
+Tous les clients **n’acceptent pas AWS S3**.
 
 Selon l’entreprise cliente, le stockage peut être :
 
-AWS S3
+- AWS S3
+- SFTP interne
+- WebDAV
+- un stockage propriétaire
 
-SFTP interne
+👉 **Le choix du stockage dépend désormais du client.**
 
-WebDAV
+---
 
-un stockage propriétaire
+## 🎯 Objectif du refactoring
 
-👉 Le stockage dépend maintenant du client.
+Tu dois refactorer pour que :
 
-## 👉 Tu dois refactorer pour que :
+- le **code métier dépende d’abstractions**, pas de classes concrètes (DIP)
+- on puisse brancher différentes implémentations de stockage :
+  - `LocalStorage`
+  - `S3Storage`
+  - `InMemoryStorage` (tests)
+- le module **Chat** n’ait **aucune connaissance** de la technologie de stockage
+- le scanner antivirus soit **interchangeable**
+- l’environnement (dev / prod) **n’influence pas le code métier**
 
-le code métier dépende d’abstractions, pas de classes concrètes (DIP)
+---
 
-on puisse brancher différentes implémentations :
+## Critères de réussite
 
-LocalStorage
+✅ Tu peux remplacer le storage **sans modifier `ChatService`**  
+✅ Tu peux tester `ChatService` **sans réseau ni filesystem**  
+✅ Les couches haut niveau dépendent **d’interfaces / abstractions**  
+✅ Ajouter un nouveau storage = **ajouter une classe**, pas modifier le métier  
+✅ Le choix du scanner est fait **à l’extérieur du service**
 
-S3Storage
+---
 
-InMemoryStorage (tests)
+## Ce que ce kata doit t’apprendre
 
-le module “Chat” n’ait aucune connaissance de la techno de stockage
+- Le stockage est un **détail d’infrastructure**
+- Le scanner antivirus est un **détail**
+- Le métier dépend de **contrats**, pas d’implémentations
+- **Dependency Injection** permet de gérer :
+  - plusieurs fournisseurs
+  - plusieurs environnements
+  - les tests
+  - l’évolutivité
 
-Critères de réussite
+---
 
-✅ Tu peux remplacer le storage sans modifier le ChatService
-✅ Tu peux tester ChatService sans réseau / sans filesystem
-✅ Ton code respecte DIP : les “hauts niveaux” dépendent d’abstractions
-✅ Ajouter un nouveau storage = ajouter une classe, pas modifier le métier (OCP-friendly)
+💡 **Indice clé**
+
+> _Si tu dois écrire un `if (env === "production")` dans ton service métier,  
+> c’est probablement que l’abstraction est au mauvais endroit._
