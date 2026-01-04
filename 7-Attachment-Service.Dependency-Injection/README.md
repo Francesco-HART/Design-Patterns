@@ -128,6 +128,70 @@ Selon l’entreprise cliente, le stockage peut être :
 
 ---
 
+## 🔍 Problématique — Preview Generation
+
+### Contexte métier
+
+Lorsqu’un utilisateur envoie un fichier, une **preview** doit être générée afin de :
+
+- afficher une miniature dans le chat
+- éviter de charger le fichier complet côté client
+- offrir une expérience utilisateur homogène
+
+Cependant, **la manière de générer une preview dépend du type de fichier**.
+
+---
+
+## 📂 Types de fichiers à gérer
+
+Dans ce kata, **trois grandes familles de fichiers doivent être prises en charge**.
+
+### 🖼️ Images
+
+Exemples :
+
+- `image/png`
+- `image/jpeg`
+- `image/gif`
+
+La preview consiste à :
+
+- redimensionner l’image (_scaling_)
+- respecter le ratio
+- produire une image de taille maximale définie
+
+---
+
+### 🎥 Vidéos
+
+Exemples :
+
+- `video/mp4`
+- `video/avi`
+- `video/h264`
+
+La preview consiste à :
+
+- extraire une frame de la vidéo
+- générer une image représentative
+
+---
+
+### 📄 Documents
+
+Exemples :
+
+- `application/pdf`
+- `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- `text/plain`
+
+La preview consiste à :
+
+- rendre une page ou un aperçu du document
+- générer une image ou un fichier de preview
+
+---
+
 ## 🎯 Objectif du refactoring
 
 Tu dois refactorer pour que :
@@ -137,7 +201,10 @@ Tu dois refactorer pour que :
   - `LocalStorage`
   - `S3Storage`
   - `InMemoryStorage` (tests)
-- le module **Chat** n’ait **aucune connaissance** de la technologie de stockage
+- le module **Chat** n’ait **aucune connaissance** :
+  - de la technologie de stockage
+  - du fournisseur antivirus
+  - du type de preview générée
 - le scanner antivirus soit **interchangeable**
 - l’environnement (dev / prod) **n’influence pas le code métier**
 
@@ -157,6 +224,7 @@ Tu dois refactorer pour que :
 
 - Le stockage est un **détail d’infrastructure**
 - Le scanner antivirus est un **détail**
+- La génération de preview est un **détail**
 - Le métier dépend de **contrats**, pas d’implémentations
 - **Dependency Injection** permet de gérer :
   - plusieurs fournisseurs
