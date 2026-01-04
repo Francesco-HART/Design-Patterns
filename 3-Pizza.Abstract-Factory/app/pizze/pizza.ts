@@ -26,7 +26,7 @@ export class CheesePizza extends Pizza {
   prepare(): void {
     console.log(`Preparing ${this.name}`);
 
-    const dough = new ThinCrustDough();
+    const dough = new ThinCrustDough(); // ❌ dépendance concrète
     const sauce = new MarinaraSauce();
     const cheese = new ReggianoCheese();
   }
