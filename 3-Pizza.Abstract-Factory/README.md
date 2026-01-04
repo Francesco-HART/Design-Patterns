@@ -1,26 +1,45 @@
-Part 1
-Let’s say you have a pizza shop, and as a cutting-edge pizza store owner in
-Objectville you might end up writing some code like this:
+Looking at object dependencies
 
-But you need more than one type of pizza...
+When you directly instantiate an object, you are depending on its
+concrete class. Take a look at our very dependent PizzaStore one
+page back. It creates all the pizza objects right in the PizzaStore class
+instead of delegating to a factory.
+If we draw a diagram representing that version of the PizzaStore
+and all the objects it depends on, here’s what it looks like:
 
-So then you’d add some code that determines the appropriate type of pizza and
-then goes about making the pizza
+Now, the main problem with the very dependent PizzaStore is that it depends
+on every type of pizza because it actually instantiates concrete types in its
+orderPizza() method.
+While we’ve created an abstraction, Pizza, we’re nevertheless creating concrete
+Pizzas in this code, so we don’t get a lot of leverage out of this abstraction.
+How can we get those instantiations out of the orderPizza() method? Well, as we
+know, the Factory Method Pattern allows us to do just that.
+So, after we’ve applied the Factory Method Pattern, our diagram looks like this:
 
-You realize that all of your competitors have added a couple of trendy pizzas to their
-menus: the Clam Pizza and the Veggie Pizza. Obviously you need to keep up with the
-competition, so you’ll add these items to your menu. And you haven’t been selling many
-Greek pizzas lately, so you decide to take that off the menu:
+The design for the Pizza Store is really shaping up: it’s got a
+flexible framework and it does a good job of adhering to design
+principles.
+Now, the key to Objectville Pizza’s success has always been fresh,
+quality ingredients, and what you’ve discovered is that with the
+new framework your franchises have been following your procedures,
+but a few franchises have been substituting inferior ingredients in
+their pizzas to lower costs and increase their margins. You know
+you’ve got to do something, because in the long term this is going
+to hurt the Objectville brand!
 
-Part 2
+So how are you going to ensure each franchise is using quality ingredients?
+You’re going to build a factory that produces them and ships them to your
+franchises!
+Now there’s only one problem with this plan: the franchises are located in
+different regions and what is red sauce in New York is not red sauce in Chicago.
+So, you have one set of ingredients that needs to be shipped to New York and a
+different set that needs to be shipped to Chicago. Let’s take a closer look:
 
-Your Objectville Pizza Store has done so well that you’ve trounced
-the competition and now everyone wants a Pizza Store in their
-own neighborhood. As the franchiser, you want to ensure the
-quality of the franchise operations and so you want them to use
-your time-tested code.
-
-But what about regional differences? Each franchise might want to
-offer different styles of pizzas (New York, Chicago, and California,
-to name a few), depending on where the franchise store is located
-and the tastes of the local pizza connoisseurs.
+New York uses one set of ingredients and
+Chicago another. Given the popularity of
+Objectville Pizza, it won’t be long before
+you also need to ship another set of regional
+ingredients to California, and what’s next?
+Austin?
+For this to work, you’re going to have to figure
+out how to handle families of ingredients.

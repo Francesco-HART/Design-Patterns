@@ -1,23 +1,33 @@
+import {
+  ThinCrustDough,
+  MarinaraSauce,
+  ReggianoCheese,
+} from "@/ingredients/ingredients";
+
 export abstract class Pizza {
   protected name!: string;
 
-  prepare(): void {
-    console.log(`Preparing ${this.name}`);
-  }
+  abstract prepare(): void;
 
   bake(): void {
-    console.log(`Baking ${this.name}`);
+    console.log("Bake for 25 minutes at 350");
   }
 
   cut(): void {
-    console.log(`Cutting ${this.name}`);
+    console.log("Cutting the pizza into diagonal slices");
   }
 
   box(): void {
-    console.log(`Boxing ${this.name}`);
+    console.log("Place pizza in official PizzaStore box");
   }
+}
 
-  getName(): string {
-    return this.name;
+export class CheesePizza extends Pizza {
+  prepare(): void {
+    console.log(`Preparing ${this.name}`);
+
+    const dough = new ThinCrustDough();
+    const sauce = new MarinaraSauce();
+    const cheese = new ReggianoCheese();
   }
 }
