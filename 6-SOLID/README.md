@@ -28,3 +28,17 @@ inconveniences:- Initial complexity: Designing for OCP may introduce additional 
 
 - Potential performance overhead: Using abstractions like interfaces and inheritance may introduce performance overhead in some cases.
 - Learning curve: Developers may need to learn new design patterns and principles to effectively implement OCP
+
+3- Liskov substitution principle (LSP)
+Definition: Subtypes must be substitutable for their base types without altering the correctness of the program.
+Implementation: Ensure that derived classes can be used in place of their base classes without causing unexpected behavior. This involves adhering to the contracts defined by the base class and not violating any invariants.
+
+Advantages:- Improved code reliability: Ensures that derived classes behave consistently with their base classes, reducing the risk of runtime errors.
+
+- Enhanced polymorphism: Allows for more flexible and interchangeable code, as derived classes can be used seamlessly in place of base classes.
+- Easier maintenance: Changes to base classes can be made with confidence that derived classes will still function correctly.
+
+inconveniences:- Design constraints: Adhering to LSP may impose constraints on the design of derived classes, limiting their flexibility.
+
+- Increased complexity: Ensuring that derived classes conform to the base class contracts may introduce additional complexity.
+- Potential for over-engineering: Overemphasis on LSP can lead to overly complex class hierarchies and abstractions.
