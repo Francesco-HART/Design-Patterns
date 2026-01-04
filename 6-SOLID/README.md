@@ -56,3 +56,17 @@ inconveniences:- Increased number of interfaces: Adhering to ISP may lead to a l
 
 - Potential for fragmentation: Too many small interfaces can lead to fragmentation, making it harder to manage and understand the overall design.
 - Coordination overhead: More interfaces may require additional coordination and communication between components.
+
+5- Dependency inversion principle (DIP)
+Definition: High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.
+Implementation: Use interfaces or abstract classes to define the contracts between high-level and low-level modules. High-level modules should depend on these abstractions rather than concrete implementations.
+
+Advantages:- Improved modularity: Decouples high-level and low-level modules, making it easier to change or replace implementations without affecting the overall system.
+
+- Enhanced testability: Allows for easier mocking and stubbing of dependencies during testing.
+- Greater flexibility: Enables the use of different implementations for low-level modules without changing high-level modules
+
+inconveniences:- Increased complexity: Implementing DIP may introduce additional layers of abstraction, which can complicate the design.
+
+- Learning curve: Developers may need to learn new design patterns and principles to effectively implement DIP.
+- Potential performance overhead: The use of abstractions may introduce performance overhead in some cases.
