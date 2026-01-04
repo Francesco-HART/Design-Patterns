@@ -8,6 +8,12 @@ interface IPicture {
   getBytes(): Promise<string[]>;
 }
 
+interface IVideo {
+  getDuration(): number;
+  takeScreenshot(): IPicture;
+  getChunks(): Promise<string[]>;
+}
+
 class Picture implements IPicture {
   getBytes(): Promise<string[]> {
     return Promise.resolve([]);
@@ -22,6 +28,20 @@ class Picture implements IPicture {
   }
 }
 
+class Video implements IVideo {
+  getDuration(): number {
+    return 0;
+  }
+
+  takeScreenshot(): IPicture {
+    return new Picture();
+  }
+
+  getChunks(): Promise<string[]> {
+    return Promise.resolve([]);
+  }
+}
+
 /**
  * ❌ PROBLÈME :
  * Uploader n’a besoin QUE des bytes,
@@ -31,5 +51,10 @@ class Uploader {
   async uploadPicture(picture: IPicture) {
     const bytes = await picture.getBytes();
     // process bytes
+  }
+
+  async uploadVideo(video: IVideo) {
+    const chunks = await video.getChunks();
+    // process chunks
   }
 }
