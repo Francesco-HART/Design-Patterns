@@ -14,3 +14,17 @@ inconveniences:- Increased number of classes: Adhering to SRP may lead to a larg
 - Potential for over-engineering: Overzealous application of SRP can lead to unnecessary abstraction
   and complexity.
 - Coordination overhead: More classes may require additional coordination and communication between them.
+
+2- Open/closed principle (OCP)
+Definition: Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.
+Implementation: Design your classes and modules in a way that allows new functionality to be added without modifying existing code. This can be achieved through techniques like inheritance, interfaces, and composition.
+
+Advantages:- Enhanced flexibility: New features can be added without altering existing code, reducing the risk of introducing bugs.
+
+- Easier maintenance: Existing code remains stable, making it easier to maintain and understand.
+- Promotes code reuse: Encourages the use of interfaces and abstract classes, leading to more reusable code.
+
+inconveniences:- Initial complexity: Designing for OCP may introduce additional complexity upfront, as it requires careful planning and abstraction.
+
+- Potential performance overhead: Using abstractions like interfaces and inheritance may introduce performance overhead in some cases.
+- Learning curve: Developers may need to learn new design patterns and principles to effectively implement OCP
