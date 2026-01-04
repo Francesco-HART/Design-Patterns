@@ -3,19 +3,20 @@ import * as AWS from "aws-sdk";
 import * as fs from "fs";
 import * as sftp from "ssh2-sftp-client";
 
-enum Destination {
+export enum Destination {
   SFTP = "sftp",
   S3 = "S3",
   WebDav = "webdav",
 }
 
-type Attachment = {
+export type Attachment = {
   message_id: string;
   local_path: string;
+  userId: string;
   preview_local_path: string;
 };
 
-interface StorageParams {
+export interface StorageParams {
   // The destination for the file upload
   destination: Destination;
 
