@@ -1,16 +1,10 @@
-import {
-  ChicagoPizzaStoreFactory,
-  NapoliPizzaStoreFactory,
-} from "./pizza.store";
+import { PaymentService } from "./payment.service";
 
 function main() {
-  const myStore = new NapoliPizzaStoreFactory();
-  const chicagoStore = new ChicagoPizzaStoreFactory();
+  console.log("Payment Adapter Example");
 
-  const pizza1 = myStore.orderPizza("margherita");
-  console.log(`Ordered a ${pizza1.getName()}\n`);
-
-  const pizza2 = chicagoStore.orderPizza("veggie");
-  console.log(`Ordered a ${pizza2.getName()}\n`);
+  const service = new PaymentService();
+  service.pay(50, "stripe");
+  service.pay(50, "paypal");
 }
 main();
