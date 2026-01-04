@@ -1,5 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
-import { Attachment, Destination, StorageParams } from "./storage.service.ts";
+import {
+	Attachment,
+	Destination,
+	Storage,
+	StorageParams,
+} from "./storage.service.ts";
 import multer from "multer";
 import * as path from "path";
 
@@ -63,7 +68,7 @@ app.post(
         preview_local_path: "some/preview/path", // Adjust as necessary
       };
 
-      const request = new UploadRequest(companyId, storageConfig);
+      const request = new UploadRequest(companyId || "default", storageConfig);
       const attachmentId = await request.upload(attachment, file.mimetype);
 
       res.status(200).json({ attachmentId });
@@ -73,13 +78,37 @@ app.post(
   }
 );
 
+interface SFTPConfig {
+  sftp_host: string;
+  sftp_port: number;
+  sftp_username: string;
+  sftp_private_key: string;
+}
+
+interface WebDavConfig {
+  webdav_url: string;
+  webdav_authorization_key: string;
+  local_path: string;
+}
+
 export type StorageConfiguration = StorageParams & {
   // SFTP enabled companies
-  sftp_companies?: { [companyId: string]: boolean };
+  sftp_companies?: { [companyId: string]: SFTPConfig };
 
   // WebDav enabled companies
-  webdav_companies?: { [companyId: string]: boolean };
+  webdav_companies?: { [companyId: string]: WebDavConfig };
 };
+
+// -----------------------------------------------------------------------------
+// ThreatProtectScanner (dummy pour le kata)
+// -----------------------------------------------------------------------------
+class ThreatProtectScanner {
+  async scan(_filePath: string): Promise<boolean> {
+    // Simulation d'un scan antivirus
+    // Retourne false = pas de virus détecté
+    return false;
+  }
+}
 
 class UploadRequest {
   private readonly companyId: string;
@@ -90,7 +119,7 @@ class UploadRequest {
     this.storageParams = storageParams;
   }
 
-  async upload(attachment: Attachment, mimeType: string): Promise<string> {
+  async upload(attachment: Attachment, _mimeType: string): Promise<string> {
     const scanner = new ThreatProtectScanner();
 
     if (await scanner.scan(attachment.local_path)) {
@@ -99,7 +128,10 @@ class UploadRequest {
 
     let params: StorageParams;
 
-    if (this.storageParams.sftp_companies[this.companyId]) {
+    if (
+      this.storageParams.sftp_companies &&
+      this.storageParams.sftp_companies[this.companyId]
+    ) {
       const sftp = this.storageParams.sftp_companies[this.companyId];
       params = {
         destination: Destination.SFTP,
@@ -108,7 +140,10 @@ class UploadRequest {
         sftp_username: sftp.sftp_username,
         sftp_private_key: sftp.sftp_private_key,
       };
-    } else if (this.storageParams.webdav_companies[this.companyId]) {
+    } else if (
+      this.storageParams.webdav_companies &&
+      this.storageParams.webdav_companies[this.companyId]
+    ) {
       const webdav = this.storageParams.webdav_companies[this.companyId];
       params = {
         destination: Destination.WebDav,

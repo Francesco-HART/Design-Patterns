@@ -7,3 +7,6 @@ pnpm-lock.yaml
 .stryker-tmp
 
 reports
+
+# uploads directory
+uploads
