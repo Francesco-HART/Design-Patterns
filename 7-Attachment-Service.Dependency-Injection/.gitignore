@@ -1,0 +1,12 @@
+.DS_Store
+node_modules
+coverage
+pnpm-lock.yaml
+
+# stryker temp files
+.stryker-tmp
+
+reports
+
+# uploads directory
+uploads
