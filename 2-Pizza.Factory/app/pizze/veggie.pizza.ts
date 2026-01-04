@@ -1,23 +1,12 @@
 import { Pizza } from "./pizza";
 
-export class VeggiePizza implements Pizza {
-  getName(): string {
-    return "Veggie Pizza";
-  }
-
-  prepare(): void {
-    console.log("Preparing Veggie Pizza");
-  }
-
-  bake(): void {
-    console.log("Baking Veggie Pizza");
+export class ChicagoVeggiePizza extends Pizza {
+  constructor() {
+    super();
+    this.name = "Chicago Veggie Pizza";
   }
 
   cut(): void {
-    console.log("Cutting Veggie Pizza");
-  }
-
-  box(): void {
-    console.log("Boxing Veggie Pizza");
+    console.log("Cutting Chicago Style Veggie Pizza into square slices");
   }
 }

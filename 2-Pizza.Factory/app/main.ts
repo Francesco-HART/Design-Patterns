@@ -1,17 +1,16 @@
-import { NapoliPizzaFactory } from "./pizza-factory/napoli-pizza.factory";
-import { SimplePizzaFactory } from "./pizza-factory/simple-pizza.factory";
-import { PizzaStore } from "./pizza.store";
+import {
+  ChicagoPizzaStoreFactory,
+  NapoliPizzaStoreFactory,
+} from "./pizza.store";
 
 function main() {
-  const pizzaFactory = new NapoliPizzaFactory();
-  const pizzaStore = new PizzaStore(pizzaFactory);
-  const pizza = pizzaStore.orderPizza("margherita");
-  console.log(pizza);
+  const myStore = new NapoliPizzaStoreFactory();
+  const chicagoStore = new ChicagoPizzaStoreFactory();
 
-  const pizza2 = pizzaStore.orderPizza("pepperoni");
-  console.log(pizza2);
+  const pizza1 = myStore.orderPizza("margherita");
+  console.log(`Ordered a ${pizza1.getName()}\n`);
 
-  const pizza3 = pizzaStore.orderPizza("veggie");
-  console.log(pizza3);
+  const pizza2 = chicagoStore.orderPizza("veggie");
+  console.log(`Ordered a ${pizza2.getName()}\n`);
 }
 main();
