@@ -183,3 +183,5 @@ Steps:
 5. Créer une interface IScanner avec une méthode scan(filePath: string): Promise<boolean>.
 6. Implémente deux classes concrètes qui implémentent IScanner (ThreatProtectScanner, SynergySecurityScanner).
 7. Modifier UploadRequest pour accepter un scanner en paramètre.
+8. Preview generator, crée un GeneratepreviewInterface pour les documents , vidéos et images. Crée une factory pour créer les bons generateurs en fonction du type de fichier.
+9. Mettre a jour upladRequest pour utiliser la factory de preview generator.

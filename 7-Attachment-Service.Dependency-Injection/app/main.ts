@@ -10,6 +10,12 @@ import {
   ThreatProtectScannerMiddleware,
 } from "./scanner.middleware.js";
 import { SharpImageScaler } from "./sharp-image-scaler.js";
+import {
+  DocumentPreviewGenerator,
+  ImagePreviewGenerator,
+  PreviewFactory,
+  VideoPreviewGenerator,
+} from "./preview-generator.js";
 
 interface SFTPConfig {
   sftp_host: string;
@@ -37,6 +43,25 @@ const isProduction = process.env.NODE_ENV === "production";
 const virusScanner = isProduction
   ? new ThreatProtectScannerMiddleware()
   : new SynergySecurityScanner();
+
+const previewFactory = new PreviewFactory();
+
+const ImageGenerator = new ImagePreviewGenerator(imageScaler);
+previewFactory.register("image/jpg", ImageGenerator);
+previewFactory.register("image/png", ImageGenerator);
+previewFactory.register("image/jpeg", ImageGenerator);
+
+const documentGenerator = new DocumentPreviewGenerator();
+previewFactory.register("application/pdf", documentGenerator);
+previewFactory.register(
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  documentGenerator
+);
+
+const videoGenerator = new VideoPreviewGenerator();
+previewFactory.register("video/mp4", videoGenerator);
+previewFactory.register("video/mov", videoGenerator);
+
 const app = express();
 const PORT = 3000;
 
@@ -81,7 +106,6 @@ app.post(
   upload.single("upload"),
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.userId;
-    const companyId = req.companyId;
 
     const file = req.file;
 
@@ -138,6 +162,14 @@ class UploadRequest {
       attachment.preview_local_path = await this.imageScaler.scale(
         attachment.local_path,
         this.MAX_IMAGE_SIZE_PX
+      );
+    }
+
+    const previewGenerator = PreviewFactory.createPreviewGenerator(_mimeType);
+    if (previewGenerator) {
+      console.log(`🔍 Generating preview for attachment of type ${_mimeType}`);
+      attachment.preview_local_path = await previewGenerator.generatePreview(
+        attachment.local_path
       );
     }
 
