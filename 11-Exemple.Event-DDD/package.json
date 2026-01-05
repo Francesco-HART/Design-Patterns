@@ -1,0 +1,38 @@
+{
+  "name": "gilded-rose-kata",
+  "version": "1.0.0",
+  "description": "Gilded Rose kata in TypeScript",
+  "scripts": {
+    "test": "vitest",
+    "test:mutate": "stryker run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@stryker-mutator/core": "9.1.1",
+    "@stryker-mutator/typescript": "4.0.0",
+    "@stryker-mutator/vitest-runner": "9.1.1",
+    "@types/node": "24.5.2",
+    "@vitest/coverage-v8": "3.2.4",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.9.2",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.2.4"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.11",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/cqrs": "^11.0.3",
+    "@nestjs/event-emitter": "^3.0.1",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/schedule": "^6.1.0",
+    "@react-email/components": "^1.0.3",
+    "class-validator": "^0.14.3",
+    "knex": "^3.1.0",
+    "neverthrow": "^8.2.0",
+    "nodemailer": "^7.0.12",
+    "uuidv7": "^1.1.0"
+  }
+}
