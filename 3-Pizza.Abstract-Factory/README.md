@@ -1,59 +1,150 @@
-Looking at object dependencies
+# Exercice – Abstract Factory Pattern
 
-When you directly instantiate an object, you are depending on its
-concrete class. Take a look at our very dependent PizzaStore one
-page back. It creates all the pizza objects right in the PizzaStore class
-instead of delegating to a factory.
-If we draw a diagram representing that version of the PizzaStore
-and all the objects it depends on, here’s what it looks like:
+## Objectville Pizza Store
 
-Now, the main problem with the very dependent PizzaStore is that it depends
-on every type of pizza because it actually instantiates concrete types in its
-orderPizza() method.
-While we’ve created an abstraction, Pizza, we’re nevertheless creating concrete
-Pizzas in this code, so we don’t get a lot of leverage out of this abstraction.
-How can we get those instantiations out of the orderPizza() method? Well, as we
-know, the Factory Method Pattern allows us to do just that.
-So, after we’ve applied the Factory Method Pattern, our diagram looks like this:
+---
 
-The design for the Pizza Store is really shaping up: it’s got a
-flexible framework and it does a good job of adhering to design
-principles.
-Now, the key to Objectville Pizza’s success has always been fresh,
-quality ingredients, and what you’ve discovered is that with the
-new framework your franchises have been following your procedures,
-but a few franchises have been substituting inferior ingredients in
-their pizzas to lower costs and increase their margins. You know
-you’ve got to do something, because in the long term this is going
-to hurt the Objectville brand!
+## Contexte
 
-So how are you going to ensure each franchise is using quality ingredients?
-You’re going to build a factory that produces them and ships them to your
-franchises!
-Now there’s only one problem with this plan: the franchises are located in
-different regions and what is red sauce in New York is not red sauce in Chicago.
-So, you have one set of ingredients that needs to be shipped to New York and a
-different set that needs to be shipped to Chicago. Let’s take a closer look:
+Dans la conception actuelle de **Objectville Pizza Store**, la création des pizzas
+a déjà été améliorée grâce au **Factory Method Pattern**.
 
-New York uses one set of ingredients and
-Chicago another. Given the popularity of
-Objectville Pizza, it won’t be long before
-you also need to ship another set of regional
-ingredients to California, and what’s next?
-Austin?
-For this to work, you’re going to have to figure
-out how to handle families of ingredients.
+Cette refactorisation a permis de :
 
-CheesePizza :
+- supprimer les dépendances directes aux classes concrètes dans `orderPizza()`,
+- déléguer la création des pizzas aux sous-classes régionales,
+- mieux respecter les principes de conception orientée objet.
 
-dépend de classes concrètes
+---
 
-est liée à NY
+## Problème : dépendances aux classes concrètes
 
-Impossible de faire :
+Même après l’introduction du Factory Method, le système reste **fortement dépendant**
+des classes concrètes de pizzas.
 
-ChicagoStyleCheesePizza sans dupliquer
+Lorsque vous instanciez directement un objet, vous dépendez de sa **classe concrète**.
 
-Violation de Open / Closed
+Dans la version initiale du `PizzaStore` :
 
-PizzaStore ne contrôle pas vraiment le style
+- les pizzas étaient créées directement dans `orderPizza()`,
+- chaque nouveau type de pizza nécessitait une modification du code existant,
+- l’abstraction `Pizza` n’apportait que peu de bénéfices.
+
+---
+
+## Amélioration avec Factory Method
+
+Grâce au Factory Method :
+
+- la création des pizzas est déplacée hors de `orderPizza()`,
+- les sous-classes décident quel type de pizza instancier,
+- le code devient plus flexible et plus extensible.
+
+La conception globale du Pizza Store est désormais solide et respecte mieux les
+principes **Open / Closed** et **Single Responsibility**.
+
+---
+
+## Nouveau problème : les ingrédients
+
+Le succès d’Objectville Pizza repose sur un point clé :
+
+> **des ingrédients frais et de qualité**
+
+Cependant, vous découvrez que certaines franchises :
+
+- respectent le processus de fabrication,
+- mais utilisent des ingrédients de moindre qualité pour réduire les coûts.
+
+À long terme, cela met en danger la **marque Objectville**.
+
+---
+
+## Objectif métier
+
+Vous décidez donc de :
+
+- centraliser la production des ingrédients,
+- garantir leur qualité,
+- et les fournir directement aux franchises.
+
+---
+
+## Problème des variations régionales
+
+Les franchises sont situées dans différentes régions :
+
+- New York
+- Chicago
+- bientôt California, puis d’autres villes
+
+Or, les ingrédients varient selon la région :
+
+- le fromage n’est pas le même,
+- la sauce n’est pas la même,
+- la pâte n’est pas la même.
+
+👉 **Un ingrédient “sauce tomate” à New York n’est pas le même qu’à Chicago.**
+
+---
+
+## Familles d’objets
+
+Chaque région utilise une **famille cohérente d’ingrédients** :
+
+- pâte
+- sauce
+- fromage
+- garnitures
+
+Ces ingrédients doivent :
+
+- être compatibles entre eux,
+- être utilisés ensemble,
+- varier en bloc selon la région.
+
+---
+
+## Problème de conception actuel
+
+Prenons l’exemple de `CheesePizza` :
+
+- elle dépend directement de classes concrètes d’ingrédients,
+- elle est implicitement liée à une région (ex : New York),
+- créer une `ChicagoStyleCheesePizza` implique de dupliquer du code,
+- l’ajout d’une nouvelle région nécessite de modifier les classes existantes.
+
+Conséquences :
+
+- violation du principe **Open / Closed**,
+- duplication de code,
+- le `PizzaStore` ne contrôle pas réellement le style des pizzas,
+- les dépendances aux classes concrètes persistent.
+
+---
+
+## Objectif de l’exercice
+
+Mettre en place une conception permettant :
+
+- de gérer **des familles d’ingrédients**,
+- de garantir la cohérence régionale des pizzas,
+- d’éliminer les dépendances aux classes concrètes,
+- de permettre l’ajout de nouvelles régions sans modifier le code existant.
+
+Vous devez utiliser le **Abstract Factory Pattern**.
+
+---
+
+## Contraintes
+
+- Le code métier ne doit pas dépendre de classes concrètes d’ingrédients
+- Les ingrédients doivent être fournis par une abstraction
+- Chaque région doit fournir une famille complète d’ingrédients
+- Le design doit respecter les principes **SOLID**
+
+---
+
+🍕 **Indice**
+
+> Pensez en termes de _familles d’objets liés entre eux_.

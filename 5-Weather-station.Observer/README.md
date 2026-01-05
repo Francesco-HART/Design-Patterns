@@ -1,30 +1,81 @@
-Vous développez une application de surveillance météo.
+# 🧩 Kata — Weather Station (Observer Pattern)
 
-L’objet WeatherData sait récupérer les mesures météo actuelles (température, humidité, pression) depuis une station météo physique.
+---
 
-L’application doit afficher ces données de différentes manières :
+## 📦 Contexte
 
-conditions actuelles
+Vous développez une application de **surveillance météo**.
 
-statistiques météo
+L’objet `WeatherData` est responsable de :
 
-prévisions
+- récupérer les mesures météo depuis une station physique :
+  - température
+  - humidité
+  - pression
 
-De nouveaux écrans pourront être ajoutés plus tard, et vous souhaitez que le système soit facilement extensible, sans modifier le code existant.
+Ces données doivent être affichées sous différentes formes :
 
-WeatherData ne doit pas connaître les implémentations concrètes des écrans
+- conditions actuelles
+- statistiques météo
+- prévisions
 
-Les écrans doivent être mis à jour automatiquement
+---
 
-On doit pouvoir :
+## ❌ Problème
 
-ajouter un nouvel écran
+L’application doit évoluer dans le temps :
 
-retirer un écran
-👉 sans modifier WeatherData
+- de **nouveaux écrans** pourront être ajoutés
+- certains écrans pourront être retirés
 
-Le code doit respecter :
+Contraintes importantes :
 
-Open / Closed
+- `WeatherData` **ne doit pas connaître** les implémentations concrètes des écrans
+- les écrans doivent être **mis à jour automatiquement** lorsque les données changent
+- toute modification doit être possible **sans modifier le code existant**
 
-DIP (Dependency Inversion Principle)
+---
+
+## 🎯 Objectifs
+
+Concevoir une solution permettant de :
+
+- notifier automatiquement les écrans lors d’un changement de données
+- ajouter un nouvel écran sans modifier `WeatherData`
+- retirer un écran sans modifier `WeatherData`
+- respecter les principes de conception orientée objet
+
+---
+
+## 🛠 Travail demandé
+
+1. Identifier les responsabilités de `WeatherData`
+2. Proposer un mécanisme de notification des écrans
+3. Concevoir une abstraction permettant de découpler :
+   - la source de données
+   - les écrans d’affichage
+4. Implémenter cette conception en code
+
+---
+
+## 📐 Contraintes de conception
+
+- `WeatherData` ne dépend d’aucune implémentation concrète d’écran
+- Les écrans peuvent être ajoutés ou supprimés dynamiquement
+- Le code doit respecter :
+  - **Open / Closed**
+  - **Dependency Inversion Principle (DIP)**
+
+---
+
+## ✅ Résultat attendu
+
+- Les écrans sont automatiquement mis à jour
+- Le système est extensible et maintenable
+- Aucun couplage fort entre la source de données et les affichages
+
+---
+
+🌦️ **Indice (optionnel)**
+
+> Un objet observe les changements d’un autre objet sans y être fortement couplé.
