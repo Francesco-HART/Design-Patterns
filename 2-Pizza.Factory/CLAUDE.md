@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project implementing the **Factory Pattern** using a Pizza Store example. The project demonstrates how to encapsulate object creation and delegate instantiation to subclasses.
 
 ## Technology Stack
 
@@ -44,10 +44,11 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
+  - `pizza.store.ts` - Pizza store with ordering logic
+  - `pizze/` - Pizza classes (Margherita, Pepperoni, Veggie)
   - `main.ts` - Application entry point
 - `test/` - Test files (*.spec.ts or *.test.ts)
+- `exemple/` - Reference implementation of Factory pattern
 
 ### Path Aliases
 
@@ -56,17 +57,19 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { PizzaStore } from "@/pizza.store";
 ```
 
 ### Design Pattern Implementation
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
+This codebase demonstrates the **Factory Pattern**:
+- Part 1: Simple Factory - Encapsulate pizza creation in a separate class
+- Part 2: Factory Method - Let subclasses decide which pizza to instantiate
 
 Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+- Separate object creation from object usage
+- Program to interfaces, not implementations
+- Open/Closed principle: add new pizzas without modifying existing code
 
 ## Testing Configuration
 

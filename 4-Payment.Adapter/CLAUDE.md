@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project implementing the **Adapter Pattern** using a Payment Gateway example. The project demonstrates how to make incompatible interfaces work together.
 
 ## Technology Stack
 
@@ -44,10 +44,12 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
+  - `payment.service.ts` - Business logic depending on abstractions
+  - `payment.processor.ts` - Adapter for external payment APIs
+  - `payment-methode/` - External payment provider classes (Stripe, PayPal)
   - `main.ts` - Application entry point
 - `test/` - Test files (*.spec.ts or *.test.ts)
+- `exemple/` - Reference implementation of Adapter pattern
 
 ### Path Aliases
 
@@ -56,17 +58,20 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { PaymentService } from "@/payment.service";
 ```
 
 ### Design Pattern Implementation
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
+This codebase demonstrates the **Adapter Pattern**:
+- Wrap external payment APIs (Stripe, PayPal) with adapters
+- Business logic depends on a common interface
+- Add new payment providers without modifying service code
 
 Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+- Convert incompatible interfaces to compatible ones
+- Decouple business logic from external dependencies
+- Open/Closed: add new adapters without changing existing code
 
 ## Testing Configuration
 

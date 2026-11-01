@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project implementing the **Abstract Factory Pattern** using a Pizza Store with regional ingredients. The project demonstrates how to create families of related objects without specifying their concrete classes.
 
 ## Technology Stack
 
@@ -44,10 +44,12 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
+  - `pizza.store.ts` - Pizza store managing ingredient factories
+  - `pizze/` - Pizza classes using injected ingredients
+  - `ingredients/` - Ingredient interfaces and factories
   - `main.ts` - Application entry point
 - `test/` - Test files (*.spec.ts or *.test.ts)
+- `exemple/` - Reference implementation of Abstract Factory pattern
 
 ### Path Aliases
 
@@ -56,17 +58,20 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { PizzaIngredientFactory } from "@/ingredients/pizza-ingredient.factory";
 ```
 
 ### Design Pattern Implementation
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
+This codebase demonstrates the **Abstract Factory Pattern**:
+- Create families of related ingredients (dough, sauce, cheese, toppings)
+- Each region (NY, Chicago) provides its own ingredient family
+- Pizzas depend on abstractions, not concrete ingredient classes
 
 Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+- Ensure consistency across related products
+- Dependency Inversion: depend on abstractions
+- Open/Closed: add new regions without modifying pizza classes
 
 ## Testing Configuration
 
