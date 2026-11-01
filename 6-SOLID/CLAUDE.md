@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project teaching the **SOLID Principles** through practical exercises. Each sub-folder focuses on one principle.
 
 ## Technology Stack
 
@@ -44,8 +44,11 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
+  - `1-SRP/` - Single Responsibility Principle
+  - `2-OCP/` - Open/Closed Principle
+  - `3-LSP/` - Liskov Substitution Principle
+  - `4-ISP/` - Interface Segregation Principle
+  - `5-DIP/` - Dependency Inversion Principle
   - `main.ts` - Application entry point
 - `test/` - Test files (*.spec.ts or *.test.ts)
 
@@ -56,17 +59,16 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { Article } from "@/1-SRP/article";
 ```
 
-### Design Pattern Implementation
+### SOLID Principles
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
-
-Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+1. **SRP** - Single Responsibility: A class should have only one reason to change
+2. **OCP** - Open/Closed: Open for extension, closed for modification
+3. **LSP** - Liskov Substitution: Subtypes must be substitutable for base types
+4. **ISP** - Interface Segregation: Clients should not depend on interfaces they don't use
+5. **DIP** - Dependency Inversion: Depend on abstractions, not concretions
 
 ## Testing Configuration
 

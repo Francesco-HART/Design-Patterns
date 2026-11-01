@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project implementing **Dependency Injection (DIP)** with multiple patterns (Factory, Strategy) using an Attachment Service example. The project demonstrates how to build testable, extensible architectures.
 
 ## Technology Stack
 
@@ -13,6 +13,7 @@ This is a Design Patterns educational project implementing the **Strategy Patter
 - **Biome** for linting and formatting (uses tabs, double quotes)
 - **Stryker** for mutation testing
 - **pnpm** as package manager
+- **Express** for HTTP server
 
 ## Development Commands
 
@@ -44,9 +45,12 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
-  - `main.ts` - Application entry point
+  - `main.ts` - Express server with attachment upload endpoint
+  - `storage.service.ts` - Storage service with multiple backends
+  - `IStorage.interface.ts` - Storage abstraction
+  - `AwsStorage.ts`, `SftpStorage.ts`, `WebDavStorage.ts` - Implementations
+  - `scanner.middleware.ts` - Virus scanning (ThreatProtect, Synergy)
+  - `preview-generator.ts` - Preview generation for images, documents, videos
 - `test/` - Test files (*.spec.ts or *.test.ts)
 
 ### Path Aliases
@@ -56,17 +60,20 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { StorageService } from "@/storage.service";
 ```
 
 ### Design Pattern Implementation
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
+This codebase demonstrates multiple patterns working together:
+- **Dependency Inversion**: Business logic depends on abstractions (IStorage, IScanner)
+- **Factory**: Create storage/scanner implementations based on configuration
+- **Strategy**: Swap implementations at runtime (dev vs. production)
 
 Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+- No `if (env === "production")` in business logic
+- All dependencies are injected, not instantiated
+- Easy to test with mock implementations
 
 ## Testing Configuration
 

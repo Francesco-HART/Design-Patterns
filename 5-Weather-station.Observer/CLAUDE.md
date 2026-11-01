@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Design Patterns educational project implementing the **Strategy Pattern** using a Duck simulation example. The project demonstrates how to use composition and interfaces to create flexible, extensible object behaviors.
+This is a Design Patterns educational project implementing the **Observer Pattern** using a Weather Station example. The project demonstrates how to define one-to-many dependencies between objects.
 
 ## Technology Stack
 
@@ -44,10 +44,11 @@ npx biome format --write .
 ### Directory Structure
 
 - `app/` - Main application source code
-  - `Duck.ts` - Base Duck class with core behaviors
-  - `Mallard.duck.ts` - Concrete duck implementation extending Duck
+  - `weather-data.ts` - Observable/Subject that broadcasts measurements
+  - `display/` - Observer implementations (CurrentConditions, Statistics, Forecast)
   - `main.ts` - Application entry point
 - `test/` - Test files (*.spec.ts or *.test.ts)
+- `exemple/` - Reference implementation of Observer pattern
 
 ### Path Aliases
 
@@ -56,17 +57,20 @@ The project uses TypeScript path aliases configured in `tsconfig.json`:
 
 Use these aliases when importing from the app directory:
 ```typescript
-import { Duck } from "@/Duck";
+import { WeatherData } from "@/weather-data";
 ```
 
 ### Design Pattern Implementation
 
-This codebase demonstrates the **Strategy Pattern**. The Duck classes are designed to allow behaviors to be composed rather than inherited, enabling runtime behavior changes and better code reuse.
+This codebase demonstrates the **Observer Pattern**:
+- WeatherData (Subject) maintains a list of observers
+- Display screens (Observers) register/unregister dynamically
+- When data changes, all observers are notified automatically
 
 Key principles:
-- Duck is the base class with common behaviors (quack, swim, display)
-- Concrete duck types (like Mallard) extend Duck and override specific behaviors
-- The architecture should evolve to separate behaviors into strategy interfaces
+- Loose coupling between subject and observers
+- Open/Closed: add new displays without modifying WeatherData
+- Dependency Inversion: subject depends on observer interface
 
 ## Testing Configuration
 
